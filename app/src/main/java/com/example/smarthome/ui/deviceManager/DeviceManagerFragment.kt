@@ -24,7 +24,25 @@ class DeviceManagerFragment : Fragment() {
 
         database = FirebaseDatabase.getInstance("https://smarthome-5d99c-default-rtdb.europe-west1.firebasedatabase.app/").reference
 
+        // Climate control visibility toggle
+        binding.switchClimate.setOnCheckedChangeListener { _, isChecked ->
+            binding.textViewOnClimate.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.textViewOffClimate.visibility = if (isChecked) View.GONE else View.VISIBLE
+        }
 
+        // Door control visibility toggle
+        binding.switchDoor.setOnCheckedChangeListener { _, isChecked ->
+            binding.textViewOnDoor.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.textViewOffDoor.visibility = if (isChecked) View.GONE else View.VISIBLE
+        }
+
+        // Motion control visibility toggle
+        binding.switchMotion.setOnCheckedChangeListener { _, isChecked ->
+            binding.textViewOnMotion.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.textViewOffMotion.visibility = if (isChecked) View.GONE else View.VISIBLE
+        }
+
+        // Existing Firebase listeners
         database.child("door_lock").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val doorLock = snapshot.getValue(String::class.java)
@@ -39,7 +57,6 @@ class DeviceManagerFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {}
         })
 
-
         database.child("motion").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val motion = snapshot.getValue(String::class.java)
@@ -53,7 +70,6 @@ class DeviceManagerFragment : Fragment() {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
 
         database.child("set_temperature").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

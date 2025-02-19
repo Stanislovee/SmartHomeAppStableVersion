@@ -26,26 +26,6 @@ class TemperatureSettingsFragment : Fragment() {
     private var _binding: FragmentTemperatureSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private val signInDataSource: SignInDataSource = SignInDataSourceImpl()
-
-    private val signInLauncher =
-        registerForActivityResult(FirebaseAuthUIActivityResultContract()) { activityResult ->
-            if (activityResult.idpResponse?.error == null) {
-                lifecycleScope.launch {
-                    signInDataSource.onActivitySignInResultReceived(
-                        activityResult.idpResponse?.idpToken,
-                        activityResult.resultCode
-                    )
-                    checkCurrentUser()
-                }
-            } else if (activityResult.idpResponse?.isRecoverableErrorResponse == true) {
-                launchSignIn(false)
-            } else {
-                val error = activityResult.idpResponse?.error
-                error?.printStackTrace()
-                Toast.makeText(requireContext(), "Sign-in failed: ${error?.message}", Toast.LENGTH_LONG).show()
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -146,31 +126,9 @@ class TemperatureSettingsFragment : Fragment() {
         textView.text = value.toInt().toString()
     }
 
-    private fun checkCurrentUser() {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
-            Log.d("TemperatureSettings", "No user found, launching sign-in")
-            launchSignIn(false)
-        } else {
-            Log.d("TemperatureSettings", "User found: ${user.email}, UID: ${user.uid}")
-            Toast.makeText(requireContext(), "User: ${user.email}, UID: ${user.uid}", Toast.LENGTH_LONG).show()
-        }
-    }
 
-    private fun launchSignIn(mergeAnonymousAccount: Boolean) {
-        val intentBuilder = AuthUI.getInstance().createSignInIntentBuilder()
-        if (mergeAnonymousAccount) intentBuilder.enableAnonymousUsersAutoUpgrade()
 
-        intentBuilder.setAlwaysShowSignInMethodScreen(true)
-            .setTheme(R.style.Theme_SmartHome)
-            .setAvailableProviders(
-                listOf(
-                    AuthUI.IdpConfig.GoogleBuilder().build(),
-                    AuthUI.IdpConfig.EmailBuilder().build()
-                )
-            )
-        signInLauncher.launch(intentBuilder.build())
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
