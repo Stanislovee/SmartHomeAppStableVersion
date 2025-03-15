@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/smarthome/AuthRepository.kt
 package com.example.smarthome
 
 import android.content.Context
@@ -12,18 +11,13 @@ import com.example.smarthome.network.AuthApiService
 import com.example.smarthome.network.KtorClient
 
 interface AuthRepository {
-
     suspend fun login(email: String, password: String, context: Context): Pair<Int, ApiResponse>
-
     suspend fun register(name: String, email: String, password: String): Pair<Int, ApiResponse>
-
     suspend fun verifyToken(token: String): Pair<Int, ApiResponse>
-
     suspend fun requestPasswordReset(email: String): Pair<Int, ApiResponse>
-
     suspend fun verifyResetCode(email: String, code: String): Pair<Int, ApiResponse>
-
     suspend fun changePassword(email: String, code: String, newPassword: String): Pair<Int, ApiResponse>
+    suspend fun getUserName(email: String): String? // Новий метод
 }
 
 class AuthRepositoryImpl(private val apiService: AuthApiService = KtorClient.authApiService) : AuthRepository {
@@ -55,5 +49,9 @@ class AuthRepositoryImpl(private val apiService: AuthApiService = KtorClient.aut
     override suspend fun changePassword(email: String, code: String, newPassword: String): Pair<Int, ApiResponse> {
         val request = ChangePasswordRequest(email = email, code = code, newPassword = newPassword)
         return apiService.changePassword(request)
+    }
+
+    override suspend fun getUserName(email: String): String? {
+        return apiService.getUserName(email)
     }
 }

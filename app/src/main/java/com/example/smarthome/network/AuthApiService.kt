@@ -18,13 +18,10 @@ import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
 object KtorClient {
-    // Replace with your server's IP if not using emulator localhost
-    const val BASE_URL = "http://10.0.2.2/api/" // For emulator; use real IP for device
+    const val BASE_URL = "http://10.0.2.2/api/" // Переконайтеся, що це ваш правильний URL
     val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            gson {
-                setLenient()
-            }
+            gson { setLenient() }
         }
         install(HttpTimeout) {
             requestTimeoutMillis = 30000
@@ -38,25 +35,6 @@ object KtorClient {
 
 class AuthApiService(private val client: HttpClient = KtorClient.client) {
 
-    suspend fun requestPasswordReset(request: ForgotPasswordRequest): Pair<Int, ApiResponse> {
-        try {
-            println("Sending password reset request to ${KtorClient.BASE_URL}forgot_password.php with $request")
-            val response = client.post("${KtorClient.BASE_URL}forgot_password.php") {
-                contentType(ContentType.Application.Json)
-                setBody(request)
-            }
-            val rawResponse = response.bodyAsText()
-            println("Raw response: $rawResponse")
-            val apiResponse: ApiResponse = response.body()
-            println("Parsed response: $apiResponse")
-            return Pair(response.status.value, apiResponse)
-        } catch (e: Exception) {
-            println("Request password reset error: ${e.message}")
-            throw e
-        }
-    }
-
-    // Other methods remain unchanged unless needed
     suspend fun login(request: LoginRequest, context: Context): Pair<Int, ApiResponse> {
         println("Sending login request to ${KtorClient.BASE_URL}login.php with $request")
         try {
@@ -87,20 +65,6 @@ class AuthApiService(private val client: HttpClient = KtorClient.client) {
         }
     }
 
-    suspend fun verifyToken(token: String): Pair<Int, ApiResponse> {
-        try {
-            val response = client.post("${KtorClient.BASE_URL}verify.php") {
-                contentType(ContentType.Application.Json)
-                header("Authorization", "Bearer $token")
-            }
-            val apiResponse: ApiResponse = response.body()
-            return Pair(response.status.value, apiResponse)
-        } catch (e: Exception) {
-            println("Verify token error: ${e.message}")
-            throw e
-        }
-    }
-
     suspend fun register(request: RegisterRequest): Pair<Int, ApiResponse> {
         println("Sending register request to ${KtorClient.BASE_URL}register.php with $request")
         try {
@@ -116,18 +80,31 @@ class AuthApiService(private val client: HttpClient = KtorClient.client) {
         }
     }
 
-    suspend fun getUserName(email: String): String? {
-        println("Fetching user name for email: $email")
+    suspend fun verifyToken(token: String): Pair<Int, ApiResponse> {
         try {
-            val response = client.post("${KtorClient.BASE_URL}getUserName.php") {
+            val response = client.post("${KtorClient.BASE_URL}verify.php") {
                 contentType(ContentType.Application.Json)
-                setBody(mapOf("email" to email))
+                header("Authorization", "Bearer $token")
             }
             val apiResponse: ApiResponse = response.body()
-            return if (apiResponse.success) apiResponse.name else null
+            return Pair(response.status.value, apiResponse)
         } catch (e: Exception) {
-            println("Error fetching user name: ${e.message}")
-            return null
+            println("Verify token error: ${e.message}")
+            throw e
+        }
+    }
+
+    suspend fun requestPasswordReset(request: ForgotPasswordRequest): Pair<Int, ApiResponse> {
+        try {
+            val response = client.post("${KtorClient.BASE_URL}forgot_password.php") {
+                contentType(ContentType.Application.Json)
+                setBody(request)
+            }
+            val apiResponse: ApiResponse = response.body()
+            return Pair(response.status.value, apiResponse)
+        } catch (e: Exception) {
+            println("Request password reset error: ${e.message}")
+            throw e
         }
     }
 
@@ -137,10 +114,7 @@ class AuthApiService(private val client: HttpClient = KtorClient.client) {
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }
-            val rawResponse = response.bodyAsText()
-            println("Raw response from verify_code: $rawResponse")
             val apiResponse: ApiResponse = response.body()
-            println("Parsed response from verify_code: $apiResponse")
             return Pair(response.status.value, apiResponse)
         } catch (e: Exception) {
             println("Verify reset code error: ${e.message}")
@@ -154,14 +128,29 @@ class AuthApiService(private val client: HttpClient = KtorClient.client) {
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }
-            val rawResponse = response.bodyAsText()
-            println("Raw response from change_password: $rawResponse")
             val apiResponse: ApiResponse = response.body()
-            println("Parsed response from change_password: $apiResponse")
             return Pair(response.status.value, apiResponse)
         } catch (e: Exception) {
             println("Change password error: ${e.message}")
             throw e
+        }
+    }
+
+    suspend fun getUserName(email: String): String? {
+        println("Fetching user name for email: $email")
+        try {
+            val response = client.post("${KtorClient.BASE_URL}getUserName.php") {
+                contentType(ContentType.Application.Json)
+                setBody(mapOf("email" to email))
+            }
+            val rawResponse = response.bodyAsText()
+            println("Raw response from getUserName: $rawResponse")
+            val apiResponse: ApiResponse = response.body()
+            println("Parsed response: $apiResponse")
+            return if (apiResponse.success) apiResponse.name else null
+        } catch (e: Exception) {
+            println("Error fetching user name: ${e.message}")
+            return null
         }
     }
 }

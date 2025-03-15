@@ -92,7 +92,7 @@ class AuthFragment : Fragment() {
             }
         })
 
-        // Initialize all UI elements
+
         val imageStartActivity = binding.imageStartActivity
         val imageStartText = binding.imageStartText
         val btnStart = binding.btnStart
@@ -159,7 +159,7 @@ class AuthFragment : Fragment() {
         val textLowerInfoChangedPasswordActivity = binding.textLowerInfoChangedPasswordActivity
         val btnContinueInfoChangedPasswordActivity = binding.btnContinueInfoChangedPasswordActivity
 
-        // Initial UI state - everything hidden except start screen
+        // Початковий стан UI (залишаємо без змін)
         imageStartActivity.visibility = View.VISIBLE
         imageStartText.visibility = View.VISIBLE
         btnStart.visibility = View.VISIBLE
@@ -226,7 +226,7 @@ class AuthFragment : Fragment() {
         textLowerInfoChangedPasswordActivity.visibility = View.GONE
         btnContinueInfoChangedPasswordActivity.visibility = View.GONE
 
-        // Button click listeners
+        // Обробники кнопок (залишаємо без змін, крім login і register)
         btnStart.setOnClickListener {
             imageStartActivity.visibility = View.GONE
             imageStartText.visibility = View.GONE
@@ -465,9 +465,7 @@ class AuthFragment : Fragment() {
                     val (status, response) = authRepository.changePassword(email, code, password)
                     println("Change password status: $status, response: $response")
                     if (response.success) {
-                        // Сховати всі елементи
                         hideAllViews()
-                        // Показати лише InfoChangedPasswordActivity
                         imageInfoChangedPasswordActivity.visibility = View.VISIBLE
                         textUpperInfoChangedPasswordActivity.visibility = View.VISIBLE
                         textLowerInfoChangedPasswordActivity.visibility = View.VISIBLE
@@ -528,6 +526,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun hideAllViews() {
+        // Залишаємо без змін
         binding.imageStartActivity.visibility = View.GONE
         binding.imageStartText.visibility = View.GONE
         binding.btnStart.visibility = View.GONE
@@ -606,12 +605,22 @@ class AuthFragment : Fragment() {
                             val sharedPref = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                             sharedPref?.let {
                                 with(it.edit()) {
-                                    putString("user_name", email)
+                                    putString("user_email", email)
                                     putBoolean("is_logged_in", true)
                                     apply()
                                 }
+
+                                val userName = authRepository.getUserName(email)
+                                if (userName != null) {
+                                    with(it.edit()) {
+                                        putString("user_name", userName)
+                                        apply()
+                                    }
+                                    Toast.makeText(requireContext(), "Welcome, $userName!", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(requireContext(), "Failed to fetch name", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                            Toast.makeText(requireContext(), "Successful entry: ${response.message}", Toast.LENGTH_SHORT).show()
                             (activity as? MainActivity)?.showBottomNavigation()
                             findNavController().navigate(R.id.navigation_temperature_settings)
                         }
@@ -624,6 +633,7 @@ class AuthFragment : Fragment() {
             } catch (e: Exception) {
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    println("Login exception: ${e.stackTraceToString()}")
                 }
             }
         }
@@ -673,12 +683,23 @@ class AuthFragment : Fragment() {
                             val sharedPref = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                             sharedPref?.let {
                                 with(it.edit()) {
+                                    putString("user_email", email)
                                     putString("user_name", name)
                                     putBoolean("is_logged_in", true)
                                     apply()
                                 }
+
+                                val fetchedName = authRepository.getUserName(email)
+                                if (fetchedName != null && fetchedName != name) {
+                                    with(it.edit()) {
+                                        putString("user_name", fetchedName)
+                                        apply()
+                                    }
+                                    Toast.makeText(requireContext(), "Welcome, $fetchedName!", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(requireContext(), "Welcome, $name!", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                            Toast.makeText(requireContext(), "Successful registration: ${response.message}", Toast.LENGTH_SHORT).show()
                             hideAllViews()
                             binding.imageInfoCreateAccActivity.visibility = View.VISIBLE
                             binding.textUpperInfoCreateAccActivity.visibility = View.VISIBLE
@@ -693,6 +714,7 @@ class AuthFragment : Fragment() {
             } catch (e: Exception) {
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    println("Register exception: ${e.stackTraceToString()}")
                 }
             }
         }
