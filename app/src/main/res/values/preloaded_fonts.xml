@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/inter_medium</item>
+        <item>@font/inter_semibold</item>
         <item>@font/manrope_medium</item>
         <item>@font/manrope_semibold</item>
+        <item>@font/montserrat_semibold</item>
         <item>@font/outfit</item>
         <item>@font/outfit_bold</item>
+        <item>@font/outfit_extrabold</item>
         <item>@font/outfit_semibold</item>
+        <item>@font/plus_jakarta_sans_medium</item>
+        <item>@font/plus_jakarta_sans_semibold</item>
+        <item>@font/roboto</item>
         <item>@font/roboto_bold</item>
     </array>
 </resources>

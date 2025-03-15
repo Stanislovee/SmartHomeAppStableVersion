@@ -11,8 +11,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.smarthome.R
-import com.example.smarthome.SignInDataSource
-import com.example.smarthome.SignInDataSourceImpl
 import com.example.smarthome.databinding.FragmentTemperatureSettingsBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract

@@ -1,117 +1,59 @@
+// File: app/src/main/java/com/example/smarthome/AuthRepository.kt
 package com.example.smarthome
 
-import android.util.Log
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.URLProtocol
-import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
+import android.content.Context
+import com.example.smarthome.model.ApiResponse
+import com.example.smarthome.model.LoginRequest
+import com.example.smarthome.model.RegisterRequest
+import com.example.smarthome.model.ForgotPasswordRequest
+import com.example.smarthome.model.VerifyCodeRequest
+import com.example.smarthome.model.ChangePasswordRequest
+import com.example.smarthome.network.AuthApiService
+import com.example.smarthome.network.KtorClient
 
 interface AuthRepository {
-    suspend fun login(email: String, password: String): HttpResponse
-    suspend fun registerUser(email: String, password: String, name: String): HttpResponse
+
+    suspend fun login(email: String, password: String, context: Context): Pair<Int, ApiResponse>
+
+    suspend fun register(name: String, email: String, password: String): Pair<Int, ApiResponse>
+
+    suspend fun verifyToken(token: String): Pair<Int, ApiResponse>
+
+    suspend fun requestPasswordReset(email: String): Pair<Int, ApiResponse>
+
+    suspend fun verifyResetCode(email: String, code: String): Pair<Int, ApiResponse>
+
+    suspend fun changePassword(email: String, code: String, newPassword: String): Pair<Int, ApiResponse>
 }
 
-class AuthRepositoryImpl : AuthRepository {
-    private val client = HttpClient(Android) {
-        expectSuccess = true
-        install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
-        }
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-                    Log.d("", message)
-                }
-            }
-            level = LogLevel.ALL
-        }
-        install(DefaultRequest) {
-            url {
-                protocol = URLProtocol.HTTP
-                contentType(ContentType.Application.Json)
-            }
+class AuthRepositoryImpl(private val apiService: AuthApiService = KtorClient.authApiService) : AuthRepository {
 
-        }
+    override suspend fun login(email: String, password: String, context: Context): Pair<Int, ApiResponse> {
+        val request = LoginRequest(Email = email, Password = password)
+        return apiService.login(request, context)
     }
 
-    override suspend fun login(email: String, password: String): HttpResponse {
-        return withContext(Dispatchers.IO) {
-            client.get("https://ktor.io/")
-        }
+    override suspend fun register(name: String, email: String, password: String): Pair<Int, ApiResponse> {
+        val request = RegisterRequest(Name = name, Email = email, Password = password)
+        return apiService.register(request)
     }
 
-    override suspend fun registerUser(email: String, password: String, name: String): HttpResponse {
-        return withContext(Dispatchers.IO) {
-            client.post(urlString = "http://apibratvateem.infy.uk/register.php",
-                block = {
-                    setBody(User(email, password, name))
-                })
-        }
+    override suspend fun verifyToken(token: String): Pair<Int, ApiResponse> {
+        return apiService.verifyToken(token)
+    }
+
+    override suspend fun requestPasswordReset(email: String): Pair<Int, ApiResponse> {
+        val request = ForgotPasswordRequest(email = email)
+        return apiService.requestPasswordReset(request)
+    }
+
+    override suspend fun verifyResetCode(email: String, code: String): Pair<Int, ApiResponse> {
+        val request = VerifyCodeRequest(email = email, code = code)
+        return apiService.verifyResetCode(request)
+    }
+
+    override suspend fun changePassword(email: String, code: String, newPassword: String): Pair<Int, ApiResponse> {
+        val request = ChangePasswordRequest(email = email, code = code, newPassword = newPassword)
+        return apiService.changePassword(request)
     }
 }
-
-@Serializable
-data class User(val email: String, val password: String, val name: String)
-
-
-
-//private void registerUser(String cookies) {
-//    String url =;
-//
-//    // Данные для регистрации
-//    JSONObject jsonBody = new JSONObject();
-//    try {
-//        jsonBody.put("Name", "John Doe");
-//        jsonBody.put("Email", "johndoe@example.com");
-//        jsonBody.put("Password", "securepassword123");
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//    }
-//
-//    // Запрос с Volley
-//    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-//        Request.Method.POST,
-//        url,
-//        jsonBody,
-//        new Response . Listener < JSONObject >() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                // Успех
-//                Toast.makeText(
-//                    RegisterActivity.this,
-//                    "User registered successfully!",
-//                    Toast.LENGTH_SHORT
-//                ).show();
-//                Log.d("RegisterResponse", response.toString());
-//            }
-//        },
-//        new Response . ErrorListener () {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                // Ошибка
-//                Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_SHORT)
-//                    .show();
-//                Log.e("RegisterError", error.toString());
-//            }
-//        }
-//    )
-//}

@@ -42,12 +42,24 @@ android {
 
 dependencies {
 
+    implementation ("com.auth0:java-jwt:4.4.0")
+    implementation("io.ktor:ktor-client-core:2.3.8")
+    implementation("io.ktor:ktor-client-cio:2.3.8")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.8")
+    implementation("io.ktor:ktor-serialization-gson:2.3.8")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    //implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    //implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    //implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    //implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.ktor.content)
-    implementation(libs.ktor.json)
-    implementation(libs.ktor.logging)
-    implementation(libs.ktor.serialization.json)
+   // implementation(libs.kotlinx.serialization.json)
+   // implementation(libs.ktor.content)
+  //  implementation(libs.ktor.json)
+   // implementation(libs.ktor.logging)
+   // implementation(libs.ktor.serialization.json)
     implementation (libs.retrofit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -61,9 +73,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.android)
+   // implementation(libs.ktor.client.core)
+   // implementation(libs.ktor.client.cio)
+   // implementation(libs.ktor.client.android)
 
     implementation(libs.firebase.auth)
 //    implementation(libs.firebase.analytics)

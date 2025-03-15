@@ -27,16 +27,25 @@
     <string name="full_name">Full Name</string>
     <string name="set_password">Set Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="verification_code">Verification code</string>
     <string name="register">Register</string>
     <string name="continue_btn">Continue</string>
     <string name="enter_email_address">Enter the email address</string>
     <string name="submit">Submit</string>
+    <string name="okay">Okay</string>
     <string name="verification">VERIFICATION</string>
-    <string name="enter_the_code">Enter the code we sent to</string>
+    <string name="send_code">Send Code</string>
+    <string name="enter_the_code_we_sent_to">Enter the code we sent to</string>
     <string name="re_send">Re-send</string>
+    <string name="new_password">New password</string>
+    <string name="create_new_password">Create new password</string>
     <string name="no_receive_code">Don’t receive code ?</string>
     <string name="eti_ap">etiap22@gmail.com</string>
     <string name="create_your_new_password">Create your new password</string>
+    <string name="your_account">Your account</string>
+    <string name="was_been_successfully_created">was been successfully created!</string>
+    <string name="your_password_was_been_">Your password was been </string>
+    <string name="successfully_changed">successfully changed!</string>
     <string name="character_minimum">8 characters minimum</string>
     <string name="enter_password">Enter password</string>
     <string name="password_characters">password is less than 8 characters</string>
@@ -121,6 +130,7 @@
     <string name="temperature">temperature</string>
     <string name="attention_reduce_the_temperature_as_it_is_too">Attention! Reduce the temperature as it is too</string>
     <string name="high">high</string>
+    <string name="eti_mail">etiap22@gmail.com</string>
 
 
     <string name="logout">Logout</string>
