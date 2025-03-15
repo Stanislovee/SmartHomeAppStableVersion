@@ -159,7 +159,7 @@ class AuthFragment : Fragment() {
         val textLowerInfoChangedPasswordActivity = binding.textLowerInfoChangedPasswordActivity
         val btnContinueInfoChangedPasswordActivity = binding.btnContinueInfoChangedPasswordActivity
 
-        // Початковий стан UI (залишаємо без змін)
+        // Початковий стан UI
         imageStartActivity.visibility = View.VISIBLE
         imageStartText.visibility = View.VISIBLE
         btnStart.visibility = View.VISIBLE
@@ -226,7 +226,7 @@ class AuthFragment : Fragment() {
         textLowerInfoChangedPasswordActivity.visibility = View.GONE
         btnContinueInfoChangedPasswordActivity.visibility = View.GONE
 
-        // Обробники кнопок (залишаємо без змін, крім login і register)
+        // Обробники кнопок
         btnStart.setOnClickListener {
             imageStartActivity.visibility = View.GONE
             imageStartText.visibility = View.GONE
@@ -465,12 +465,30 @@ class AuthFragment : Fragment() {
                     val (status, response) = authRepository.changePassword(email, code, password)
                     println("Change password status: $status, response: $response")
                     if (response.success) {
+                        val sharedPref = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        sharedPref?.let {
+                            with(it.edit()) {
+                                putString("user_email", email)
+                                putBoolean("is_logged_in", true)
+                                apply()
+                            }
+
+                            val userName = authRepository.getUserName(email)
+                            if (userName != null) {
+                                with(it.edit()) {
+                                    putString("user_name", userName)
+                                    apply()
+                                }
+                                Toast.makeText(requireContext(), "Password changed! Welcome, $userName", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(requireContext(), "Password changed, but failed to fetch name", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                         hideAllViews()
                         imageInfoChangedPasswordActivity.visibility = View.VISIBLE
                         textUpperInfoChangedPasswordActivity.visibility = View.VISIBLE
                         textLowerInfoChangedPasswordActivity.visibility = View.VISIBLE
                         btnContinueInfoChangedPasswordActivity.visibility = View.VISIBLE
-                        Toast.makeText(requireContext(), "Password changed successfully!", Toast.LENGTH_SHORT).show()
                     } else {
                         when (status) {
                             400 -> Toast.makeText(requireContext(), "Invalid code or data", Toast.LENGTH_SHORT).show()
@@ -526,7 +544,6 @@ class AuthFragment : Fragment() {
     }
 
     private fun hideAllViews() {
-        // Залишаємо без змін
         binding.imageStartActivity.visibility = View.GONE
         binding.imageStartText.visibility = View.GONE
         binding.btnStart.visibility = View.GONE
@@ -609,7 +626,6 @@ class AuthFragment : Fragment() {
                                     putBoolean("is_logged_in", true)
                                     apply()
                                 }
-
                                 val userName = authRepository.getUserName(email)
                                 if (userName != null) {
                                     with(it.edit()) {
@@ -688,7 +704,6 @@ class AuthFragment : Fragment() {
                                     putBoolean("is_logged_in", true)
                                     apply()
                                 }
-
                                 val fetchedName = authRepository.getUserName(email)
                                 if (fetchedName != null && fetchedName != name) {
                                     with(it.edit()) {
