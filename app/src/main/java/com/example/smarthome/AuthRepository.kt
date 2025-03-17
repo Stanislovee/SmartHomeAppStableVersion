@@ -17,7 +17,7 @@ interface AuthRepository {
     suspend fun requestPasswordReset(email: String): Pair<Int, ApiResponse>
     suspend fun verifyResetCode(email: String, code: String): Pair<Int, ApiResponse>
     suspend fun changePassword(email: String, code: String, newPassword: String): Pair<Int, ApiResponse>
-    suspend fun getUserName(email: String): String? // Новий метод
+    suspend fun getUserName(email: String): String?
 }
 
 class AuthRepositoryImpl(private val apiService: AuthApiService = KtorClient.authApiService) : AuthRepository {
