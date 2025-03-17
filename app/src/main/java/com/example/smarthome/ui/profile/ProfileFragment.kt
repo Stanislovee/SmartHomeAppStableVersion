@@ -12,6 +12,7 @@ import com.example.smarthome.AuthRepositoryImpl
 import com.example.smarthome.MainActivity
 import com.example.smarthome.R
 import com.example.smarthome.databinding.FragmentProfileBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -57,9 +58,25 @@ class ProfileFragment : Fragment() {
             binding.textViewCardName.text = "User"
         }
 
-        binding.imageButtonNotificationUpper.setOnClickListener {
+        binding.btnNotifications.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_profile_to_navigation_notifications)
+
         }
+
+        binding.btnDeviceManager.setOnClickListener {
+            val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNav.selectedItemId = R.id.navigation_device_manager
+        }
+
+        binding.btnSettings.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_profile_to_navigation_settings)
+        }
+
+        binding.btnHelp.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_profile_to_navigation_help)
+        }
+
+
 
         binding.btnLogout.setOnClickListener {
             with(sharedPref.edit()) {

@@ -18,7 +18,8 @@ import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
 object KtorClient {
-    const val BASE_URL = "http://10.0.2.2/api/" // Переконайтеся, що це ваш правильний URL
+     const val BASE_URL = "http://10.0.2.2/api/" //emulator
+    //const val BASE_URL = "http://192.168.0.105/api/"
     val client = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson { setLenient() }

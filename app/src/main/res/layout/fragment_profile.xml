@@ -14,7 +14,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardViewAvatar"
-        android:layout_width="300dp"
+        android:layout_width="370dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
@@ -107,17 +107,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <ImageButton
-        android:id="@+id/image_button_notification_upper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="3dp"
-        android:background="@null"
-        android:src="@drawable/icon_upper_notification"
-        app:layout_constraintStart_toEndOf="@id/materialCardViewAvatar"
-        app:layout_constraintTop_toTopOf="@id/materialCardViewAvatar"
-        tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardViewEnergy"

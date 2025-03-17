@@ -32,6 +32,7 @@
     <string name="continue_btn">Continue</string>
     <string name="enter_email_address">Enter the email address</string>
     <string name="submit">Submit</string>
+    <string name="support">Support</string>
     <string name="okay">Okay</string>
     <string name="verification">VERIFICATION</string>
     <string name="send_code">Send Code</string>

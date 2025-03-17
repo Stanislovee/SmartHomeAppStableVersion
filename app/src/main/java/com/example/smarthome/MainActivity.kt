@@ -33,6 +33,22 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val hiddenDestinations = setOf(
+                R.id.navigation_notifications,
+                R.id.navigation_settings,
+                R.id.authFragment,
+                R.id.navigation_help
+            )
+
+            if (destination.id in hiddenDestinations) {
+                hideBottomNavigation()
+            } else {
+                showBottomNavigation()
+            }
+        }
+
+
         navView.visibility = android.view.View.GONE
     }
 
