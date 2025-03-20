@@ -8,7 +8,7 @@
     tools:context=".ui.help.HelpFragment">
 
     <ImageButton
-        android:id="@+id/btnBackHelp"
+        android:id="@+id/btnBackHelpActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -19,7 +19,7 @@
         tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_view_static_help"
+        android:id="@+id/textHelpActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -27,8 +27,126 @@
         android:text="@string/support"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btnBackHelp"
-        app:layout_constraintTop_toTopOf="@+id/btnBackHelp" />
+        app:layout_constraintStart_toEndOf="@+id/btnBackHelpActivity"
+        app:layout_constraintTop_toTopOf="@+id/btnBackHelpActivity" />
+
+    <ImageView
+        android:id="@+id/imageHelpActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/image_help"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textHelpActivity" />
 
 
+    <ImageView
+        android:id="@+id/imageTextHelpActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/image_text_help"
+        app:layout_constraintEnd_toEndOf="@+id/imageHelpActivity"
+        app:layout_constraintStart_toStartOf="@+id/imageHelpActivity"
+        app:layout_constraintTop_toBottomOf="@+id/imageHelpActivity" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardContactsHelpActivity"
+        android:layout_width="320dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/profile_color"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageTextHelpActivity"
+        app:layout_constraintStart_toStartOf="@+id/imageTextHelpActivity"
+        app:layout_constraintTop_toBottomOf="@+id/imageTextHelpActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iconPhoneHelpActivity"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/icon_phone_contacts"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textPhoneHelpActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/numbers_of_phone"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/iconPhoneHelpActivity"
+                app:layout_constraintTop_toTopOf="@+id/iconPhoneHelpActivity" />
+
+            <ImageView
+                android:id="@+id/iconEmailHelpActivity"
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/icon_mail"
+                app:layout_constraintStart_toStartOf="@+id/iconPhoneHelpActivity"
+                app:layout_constraintTop_toBottomOf="@+id/iconPhoneHelpActivity" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textEmailHelpActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/eti_mail"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/iconEmailHelpActivity"
+                app:layout_constraintTop_toTopOf="@+id/iconEmailHelpActivity" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardInfoHelpActivity"
+        android:layout_width="320dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="@color/profile_color"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardContactsHelpActivity"
+        app:layout_constraintStart_toStartOf="@+id/materialCardContactsHelpActivity"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardContactsHelpActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textConstHelpActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/text_help_info"
+                android:textAllCaps="false"
+                android:textColor="@color/grey"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
